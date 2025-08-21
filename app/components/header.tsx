@@ -27,9 +27,6 @@ export function Header() {
 
         <div className="flex items-center space-x-4">
           <Button className="bg-accent hover:bg-accent/90">Solicitar Cotización</Button>
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
         </div>
       </div>
     </header>
