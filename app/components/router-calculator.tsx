@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Clock, Route, Calculator, Navigation, AlertCircle, MapPin, Settings, CreditCard } from 'lucide-react'
-import type { google } from "@types/google.maps";
 
 interface RouteInfo {
   distance: string
@@ -37,8 +36,6 @@ export function RouteCalculator() {
   const destinationAutocomplete = useRef<google.maps.places.Autocomplete | null>(null)
   const mapInstance = useRef<google.maps.Map | null>(null)
   const directionsRenderer = useRef<google.maps.DirectionsRenderer | null>(null)
-  const originMarker = useRef<google.maps.Marker | null>(null)
-  const destinationMarker = useRef<google.maps.Marker | null>(null)
 
   const initializeMap = useCallback(() => {
     if (!window.google || !mapRef.current) return
@@ -167,7 +164,7 @@ export function RouteCalculator() {
               const bounds = new window.google.maps.LatLngBounds()
               bounds.extend(result.routes[0].legs[0].start_location)
               bounds.extend(result.routes[0].legs[0].end_location)
-              mapInstance.current.fitBounds(bounds, { padding: 50 })
+              mapInstance.current.fitBounds(bounds)
             }
           } else {
             setError("No se pudo calcular la ruta. Verifica las direcciones ingresadas.")
@@ -183,11 +180,11 @@ export function RouteCalculator() {
 
   useEffect(() => {
     const loadGoogleMaps = () => {
-      const apiKey = process.env.NEXT_GOOGLE_API_KEY
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
       if (!apiKey) {
         setError(
-          "API key de Google Maps no configurada. Agrega NEXT_GOOGLE_API_KEY a tus variables de entorno.",
+          "API key de Google Maps no configurada. Agrega NEXT_PUBLIC_GOOGLE_MAPS_API_KEY a tus variables de entorno.",
         )
         return
       }
@@ -305,7 +302,7 @@ export function RouteCalculator() {
               <ol className="list-decimal list-inside space-y-1 text-sm">
                 <li>
                   Agregar tu API key como variable de entorno:{" "}
-                  <code className="bg-amber-100 px-1 rounded">NEXT_GOOGLE_API_KEY</code>
+                  <code className="bg-amber-100 px-1 rounded">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code>
                 </li>
                 <li>Habilitar estas APIs en Google Cloud Console:</li>
                 <ul className="list-disc list-inside ml-4 mt-1 space-y-1">
